@@ -86,7 +86,7 @@ void IrReceiveInit(void)
   //  AddLog_P(LOG_LEVEL_DEBUG, PSTR("IrReceive initialized"));
 }
 
-void IrReceiveCheck()
+void IrReceiveCheck(void)
 {
   char sirtype[14];  // Max is AIWA_RC_T501
   char stemp[16];
@@ -283,7 +283,7 @@ boolean IrHvacMitsubishi(const char *HVAC_Mode, const char *HVAC_FanMode, boolea
 */
 
 //boolean IrSendCommand(char *type, uint16_t index, char *dataBuf, uint16_t data_len, int16_t payload)
-boolean IrSendCommand()
+boolean IrSendCommand(void)
 {
   boolean serviced = true;
   boolean error = false;

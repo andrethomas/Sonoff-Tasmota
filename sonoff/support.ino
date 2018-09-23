@@ -39,7 +39,7 @@ byte oswatch_blocked_loop = 0;
 bool knx_started = false;
 #endif  // USE_KNX
 
-void OsWatchTicker()
+void OsWatchTicker(void)
 {
   unsigned long t = millis();
   unsigned long last_run = abs(t - oswatch_last_loop_time);
@@ -57,7 +57,7 @@ void OsWatchTicker()
   }
 }
 
-void OsWatchInit()
+void OsWatchInit(void)
 {
   oswatch_blocked_loop = RtcSettings.oswatch_blocked_loop;
   RtcSettings.oswatch_blocked_loop = 0;
@@ -65,13 +65,13 @@ void OsWatchInit()
   tickerOSWatch.attach_ms(((OSWATCH_RESET_TIME / 3) * 1000), OsWatchTicker);
 }
 
-void OsWatchLoop()
+void OsWatchLoop(void)
 {
   oswatch_last_loop_time = millis();
 //  while(1) delay(1000);  // this will trigger the os watch
 }
 
-String GetResetReason()
+String GetResetReason(void)
 {
   char buff[32];
   if (oswatch_blocked_loop) {
@@ -82,7 +82,7 @@ String GetResetReason()
   }
 }
 
-boolean OsWatchBlockedLoop()
+boolean OsWatchBlockedLoop(void)
 {
   return oswatch_blocked_loop;
 }
@@ -449,7 +449,7 @@ float ConvertTemp(float c)
   return result;
 }
 
-char TempUnit()
+char TempUnit(void)
 {
   return (Settings.flag.temperature_conversion) ? 'F' : 'C';
 }
@@ -461,7 +461,7 @@ void SetGlobalValues(float temperature, float humidity)
   global_humidity = humidity;
 }
 
-void ResetGlobalValues()
+void ResetGlobalValues(void)
 {
   if ((uptime - global_update) > GLOBAL_VALUES_VALID) {  // Reset after 5 minutes
     global_update = 0;
@@ -695,7 +695,7 @@ void SetSerialBaudrate(int baudrate)
   }
 }
 
-void ClaimSerial()
+void ClaimSerial(void)
 {
   serial_local = 1;
   AddLog_P(LOG_LEVEL_INFO, PSTR("SNS: Hardware Serial"));
@@ -813,7 +813,7 @@ void SetNextTimeInterval(unsigned long& timer, const unsigned long step)
  * Fill feature list
 \*********************************************************************************************/
 
-void GetFeatures()
+void GetFeatures(void)
 {
   feature_drv1 = 0x00000000;   // xdrv_01_mqtt.ino, xdrv_01_light.ino, xdrv_04_snfbridge.ino
 
@@ -1151,7 +1151,7 @@ int WifiGetRssiAsQuality(int rssi)
   return quality;
 }
 
-boolean WifiConfigCounter()
+boolean WifiConfigCounter(void)
 {
   if (wifi_config_counter) {
     wifi_config_counter = WIFI_CONFIG_SEC;
@@ -1255,7 +1255,7 @@ void WifiConfig(uint8_t type)
   }
 }
 
-void WiFiSetSleepMode()
+void WiFiSetSleepMode(void)
 {
 /* Excerpt from the esp8266 non os sdk api reference (v2.2.1):
  * Sets sleep type for power saving. Set WIFI_NONE_SLEEP to disable power saving.
@@ -1331,7 +1331,7 @@ void WifiState(uint8_t state)
   global_state.wifi_down = state ^1;
 }
 
-void WifiCheckIp()
+void WifiCheckIp(void)
 {
   if ((WL_CONNECTED == WiFi.status()) && (static_cast<uint32_t>(WiFi.localIP()) != 0)) {
     WifiState(1);
@@ -1506,7 +1506,7 @@ void WifiCheck(uint8_t param)
   }
 }
 
-int WifiState()
+int WifiState(void)
 {
   int state;
 
@@ -1517,7 +1517,7 @@ int WifiState()
   return state;
 }
 
-void WifiConnect()
+void WifiConnect(void)
 {
   WiFi.persistent(false);    // Solve possible wifi init errors
   wifi_status = 0;
@@ -1547,7 +1547,7 @@ void EspRestart()
 }
 */
 
-void EspRestart()
+void EspRestart(void)
 {
   ESP.restart();
 }
@@ -1558,7 +1558,7 @@ void EspRestart()
 \*********************************************************************************************/
 
 #ifdef MQTT_HOST_DISCOVERY
-boolean MdnsDiscoverMqttServer()
+boolean MdnsDiscoverMqttServer(void)
 {
   if (!mdns_begun) {
     return false;
@@ -1890,7 +1890,7 @@ String GetDateAndTime(byte time_type)
   return String(dt);
 }
 
-String GetUptime()
+String GetUptime(void)
 {
   char dt[16];
 
@@ -1912,7 +1912,7 @@ String GetUptime()
   return String(dt);
 }
 
-uint32_t GetMinutesUptime()
+uint32_t GetMinutesUptime(void)
 {
   TIME_T ut;
 
@@ -1925,7 +1925,7 @@ uint32_t GetMinutesUptime()
   return (ut.days *1440) + (ut.hour *60) + ut.minute;
 }
 
-uint32_t GetMinutesPastMidnight()
+uint32_t GetMinutesPastMidnight(void)
 {
   uint32_t minutes = 0;
 
@@ -2069,24 +2069,24 @@ String GetTime(int type)
   return String(stime);
 }
 
-uint32_t LocalTime()
+uint32_t LocalTime(void)
 {
   return local_time;
 }
 
-uint32_t Midnight()
+uint32_t Midnight(void)
 {
   return midnight;
 }
 
-boolean MidnightNow()
+boolean MidnightNow(void)
 {
   boolean mnflg = midnight_now;
   if (mnflg) midnight_now = 0;
   return mnflg;
 }
 
-void RtcSecond()
+void RtcSecond(void)
 {
   int32_t stdoffset;
   int32_t dstoffset;
@@ -2153,7 +2153,7 @@ void RtcSecond()
   RtcTime.year += 1970;
 }
 
-void RtcInit()
+void RtcInit(void)
 {
   sntp_setservername(0, Settings.ntp_server[0]);
   sntp_setservername(1, Settings.ntp_server[1]);
@@ -2173,7 +2173,7 @@ void RtcInit()
 
 uint16_t adc_last_value = 0;
 
-uint16_t AdcRead()
+uint16_t AdcRead(void)
 {
   uint16_t analog = 0;
   for (byte i = 0; i < 32; i++) {
@@ -2185,7 +2185,7 @@ uint16_t AdcRead()
 }
 
 #ifdef USE_RULES
-void AdcEvery250ms()
+void AdcEvery250ms(void)
 {
   uint16_t new_value = AdcRead();
   if ((new_value < adc_last_value -10) || (new_value > adc_last_value +10)) {
@@ -2283,7 +2283,7 @@ void GetLog(byte idx, char** entry_pp, size_t* len_p)
 }
 #endif  // USE_WEBSERVER
 
-void Syslog()
+void Syslog(void)
 {
   // Destroys log_data
   char syslog_preamble[64];  // Hostname + Id

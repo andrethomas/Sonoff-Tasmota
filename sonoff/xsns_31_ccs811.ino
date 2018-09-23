@@ -40,7 +40,7 @@ uint8_t ecnt = 0;
 /********************************************************************************************/
 #define EVERYNSECONDS 5
 
-void CCS811Update()  // Perform every n second
+void CCS811Update(void)  // Perform every n second
 {
   tcnt++;
   if (tcnt >= EVERYNSECONDS) {

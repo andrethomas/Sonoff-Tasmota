@@ -160,7 +160,7 @@ bool MhzCheckAndApplyFilter(uint16_t ppm, uint8_t s)
   return true;
 }
 
-void MhzEverySecond()
+void MhzEverySecond(void)
 {
   mhz_state++;
   if (8 == mhz_state) {                   // Every 8 sec start a MH-Z19 measuring cycle (which takes 1005 +5% ms)
@@ -258,7 +258,7 @@ void MhzEverySecond()
   9 - Reset
 */
 
-bool MhzCommandSensor()
+bool MhzCommandSensor(void)
 {
   boolean serviced = true;
 
@@ -280,7 +280,7 @@ bool MhzCommandSensor()
 
 /*********************************************************************************************/
 
-void MhzInit()
+void MhzInit(void)
 {
   mhz_type = 0;
   if ((pin[GPIO_MHZ_RXD] < 99) && (pin[GPIO_MHZ_TXD] < 99)) {

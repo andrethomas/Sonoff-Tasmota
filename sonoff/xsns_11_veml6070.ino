@@ -33,7 +33,7 @@
 uint8_t veml6070_address;
 uint8_t veml6070_type = 0;
 
-uint16_t Veml6070ReadUv()
+uint16_t Veml6070ReadUv(void)
 {
   if (Wire.requestFrom(VEML6070_ADDR_H, 1) != 1) {
     return -1;
@@ -50,7 +50,7 @@ uint16_t Veml6070ReadUv()
 
 /********************************************************************************************/
 
-void Veml6070Detect()
+void Veml6070Detect(void)
 {
   if (veml6070_type) {
     return;

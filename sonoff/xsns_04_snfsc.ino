@@ -63,7 +63,7 @@ void SonoffScSend(const char *data)
   AddLog(LOG_LEVEL_DEBUG);
 }
 
-void SonoffScInit()
+void SonoffScInit(void)
 {
 //  SonoffScSend("AT+DEVCONFIG=\"uploadFreq\":1800");
   SonoffScSend("AT+START");

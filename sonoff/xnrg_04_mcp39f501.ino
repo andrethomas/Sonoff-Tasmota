@@ -234,12 +234,12 @@ calc:
   return true;
 }
 
-void McpCalibrationReactivePower()
+void McpCalibrationReactivePower(void)
 {
   mcp_calibration_registers.gain_reactive_power = mcp_calibration_registers.gain_reactive_power * mcp_calibration_registers.calibration_reactive_power / mcp_output_registers.reactive_power;
 }
 
-void McpCalibrationLineFrequency()
+void McpCalibrationLineFrequency(void)
 {
   if ((0xFFFF == mcp_output_registers.line_frequency) || (0 == mcp_frequency_registers.gain_line_frequency)) {  // Reset values to 50Hz
     mcp_output_registers.line_frequency  = 50000;
@@ -248,7 +248,7 @@ void McpCalibrationLineFrequency()
   mcp_frequency_registers.gain_line_frequency = mcp_frequency_registers.gain_line_frequency * mcp_frequency_registers.line_frequency_ref / mcp_output_registers.line_frequency;
 }
 
-void McpResetSetpoints()
+void McpResetSetpoints(void)
 {
   mcp_calibration_setpoint.calibration_active_power = 0;
   mcp_calibration_setpoint.calibration_voltage = 0;
@@ -259,7 +259,7 @@ void McpResetSetpoints()
 
 /********************************************************************************************/
 
-void McpGetAddress()
+void McpGetAddress(void)
 {
   // A5 07 41 00 26 52 65
   uint8_t data[7];
@@ -275,7 +275,7 @@ void McpGetAddress()
   // Receives 06 05 004D 58
 }
 
-void McpGetCalibration()
+void McpGetCalibration(void)
 {
   if (mcp_calibration_active) { return; }
   mcp_calibration_active = 4;
@@ -295,7 +295,7 @@ void McpGetCalibration()
   // Receives 06 37 C882 B6AD 0781 9273 06000000 00000000 00000000 0000 D3FF 0300 00000003 9204 120C1300 204E0000 9808 E0AB0000 D9940000 0200 24
 }
 
-void McpSetCalibration()
+void McpSetCalibration(void)
 {
   uint8_t data[7 + MCP_CALIBRATION_LEN + 2 + 1];
 
@@ -334,7 +334,7 @@ void McpSetCalibration()
   McpSend(data);
 }
 
-void McpGetFrequency()
+void McpGetFrequency(void)
 {
   if (mcp_calibration_active) { return; }
   mcp_calibration_active = 4;
@@ -358,7 +358,7 @@ void McpGetFrequency()
   McpSend(data);
 }
 
-void McpSetFrequency()
+void McpSetFrequency(void)
 {
   // A5 11 41 00 94 57 C3 B4 41 00 AE 57 7E 46 53 4D 03
   uint8_t data[17];
@@ -410,7 +410,7 @@ void McpSetSystemConfiguration(uint16 interval)
   McpSend(data);
 }
 
-void McpSingleWireStart()
+void McpSingleWireStart(void)
 {
   if ((mcp_system_configuration & (1 << 8)) != 0) { return; }
   mcp_system_configuration = mcp_system_configuration | (1 << 8);
@@ -428,13 +428,13 @@ void McpSingleWireStop(uint8_t force)
 
 /********************************************************************************************/
 
-void McpAddressReceive()
+void McpAddressReceive(void)
 {
   // 06 05 004D 58
   mcp_address = serial_in_buffer[2] * 256 + serial_in_buffer[3];
 }
 
-void McpParseCalibration()
+void McpParseCalibration(void)
 {
   bool action = false;
 
@@ -477,7 +477,7 @@ void McpParseCalibration()
   McpResetSetpoints();
 }
 
-void McpParseFrequency()
+void McpParseFrequency(void)
 {
   // 06 07 C350 8000 A0
   mcp_frequency_registers.line_frequency_ref  = serial_in_buffer[2] * 256 + serial_in_buffer[3];
@@ -533,7 +533,7 @@ void McpParseData(uint8_t single_wire)
   }
 }
 
-bool McpSerialInput()
+bool McpSerialInput(void)
 {
   serial_in_buffer[serial_in_byte_counter++] = serial_in_byte;
   unsigned long start = millis();
@@ -589,7 +589,7 @@ bool McpSerialInput()
 
 /********************************************************************************************/
 
-void McpEverySecond()
+void McpEverySecond(void)
 {
   uint8_t get_state[] = { 0xA5, 0x08, 0x41, 0x00, 0x04, 0x4E, 0x16, 0x00 };
 
@@ -616,13 +616,13 @@ void McpEverySecond()
   }
 }
 
-void McpSnsInit()
+void McpSnsInit(void)
 {
   SetSeriallog(LOG_LEVEL_NONE);      // Free serial interface from logging interference
   digitalWrite(15, 1);               // GPIO15 - MCP enable
 }
 
-void McpDrvInit()
+void McpDrvInit(void)
 {
   if (!energy_flg) {
     if (SHELLY2 == Settings.module) {
@@ -638,7 +638,7 @@ void McpDrvInit()
   }
 }
 
-boolean McpCommand()
+boolean McpCommand(void)
 {
   boolean serviced = true;
   unsigned long value = 0;

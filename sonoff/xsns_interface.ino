@@ -235,7 +235,7 @@ uint8_t xsns_index = 0;
  * FUNC_EVERY_SECOND
 \*********************************************************************************************/
 
-uint8_t XsnsPresent()
+uint8_t XsnsPresent(void)
 {
   return xsns_present;
 }

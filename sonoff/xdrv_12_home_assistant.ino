@@ -67,7 +67,7 @@ const char HASS_DISCOVER_LIGHT_SCHEME[] PROGMEM =
   "\"effect_list\":[\"0\",\"1\",\"2\",\"3\",\"4\"]";  // string list with reference to scheme parameter. Currently only supports numbers 0 to 11 as it make the mqtt string too long
 */
 
-void HAssDiscoverRelay()
+void HAssDiscoverRelay(void)
 {
   char sidx[8];
   char stopic[TOPSZ];
@@ -136,7 +136,7 @@ void HAssDiscoverRelay()
   }
 }
 
-void HAssDiscoverButton()
+void HAssDiscoverButton(void)
 {
   char sidx[8];
   char stopic[TOPSZ];

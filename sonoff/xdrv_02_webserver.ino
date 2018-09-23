@@ -432,7 +432,7 @@ void StartWebserver(int type, IPAddress ipweb)
   if (type) { webserver_state = type; }
 }
 
-void StopWebserver()
+void StopWebserver(void)
 {
   if (webserver_state) {
     WebServer->close();
@@ -441,7 +441,7 @@ void StopWebserver()
   }
 }
 
-void WifiManagerBegin()
+void WifiManagerBegin(void)
 {
   // setup AP
   if ((WL_CONNECTED == WiFi.status()) && (static_cast<uint32_t>(WiFi.localIP()) != 0)) {
@@ -464,7 +464,7 @@ void WifiManagerBegin()
   StartWebserver(HTTP_MANAGER, WiFi.softAPIP());
 }
 
-void PollDnsWebserver()
+void PollDnsWebserver(void)
 {
   if (DnsServer) { DnsServer->processNextRequest(); }
   if (WebServer) { WebServer->handleClient(); }
@@ -472,7 +472,7 @@ void PollDnsWebserver()
 
 /*********************************************************************************************/
 
-void SetHeader()
+void SetHeader(void)
 {
   WebServer->sendHeader(F("Cache-Control"), F("no-cache, no-store, must-revalidate"));
   WebServer->sendHeader(F("Pragma"), F("no-cache"));
@@ -521,7 +521,7 @@ void ShowPage(String &page)
 
 /*********************************************************************************************/
 
-void HandleWifiLogin()
+void HandleWifiLogin(void)
 {
   String page = FPSTR(HTTP_HEAD);
   page.replace(F("{v}"), FPSTR( D_CONFIGURE_WIFI ));
@@ -530,7 +530,7 @@ void HandleWifiLogin()
   ShowPage(page, false);  // false means show page no matter if the client has or has not credentials
 }
 
-void HandleRoot()
+void HandleRoot(void)
 {
   AddLog_P(LOG_LEVEL_DEBUG, S_LOG_HTTP, S_MAIN_MENU);
 
@@ -616,7 +616,7 @@ void HandleRoot()
   }
 }
 
-void HandleAjaxStatusRefresh()
+void HandleAjaxStatusRefresh(void)
 {
   if (!WebAuthenticate()) { return WebServer->requestAuthentication(); }
 
@@ -686,7 +686,7 @@ void HandleAjaxStatusRefresh()
   WebServer->send(200, FPSTR(HDR_CTYPE_HTML), mqtt_data);
 }
 
-boolean HttpUser()
+boolean HttpUser(void)
 {
   boolean status = (HTTP_USER == webserver_state);
   if (status) { HandleRoot(); }
@@ -694,7 +694,7 @@ boolean HttpUser()
 }
 
 #ifndef BE_MINIMAL
-void HandleConfiguration()
+void HandleConfiguration(void)
 {
   if (HttpUser()) { return; }
   if (!WebAuthenticate()) { return WebServer->requestAuthentication(); }
@@ -718,7 +718,7 @@ void HandleConfiguration()
   ShowPage(page);
 }
 
-void HandleModuleConfiguration()
+void HandleModuleConfiguration(void)
 {
   if (HttpUser()) { return; }
   if (!WebAuthenticate()) { return WebServer->requestAuthentication(); }
@@ -779,12 +779,12 @@ void HandleModuleConfiguration()
   ShowPage(page);
 }
 
-void HandleWifiConfigurationWithScan()
+void HandleWifiConfigurationWithScan(void)
 {
   HandleWifi(true);
 }
 
-void HandleWifiConfiguration()
+void HandleWifiConfiguration(void)
 {
   HandleWifi(false);
 }
@@ -886,7 +886,7 @@ void HandleWifi(boolean scan)
   ShowPage(page, !(HTTP_MANAGER == webserver_state));
 }
 
-void HandleMqttConfiguration()
+void HandleMqttConfiguration(void)
 {
   if (HttpUser()) { return; }
   if (!WebAuthenticate()) { return WebServer->requestAuthentication(); }
@@ -910,7 +910,7 @@ void HandleMqttConfiguration()
   ShowPage(page);
 }
 
-void HandleLoggingConfiguration()
+void HandleLoggingConfiguration(void)
 {
   if (HttpUser()) { return; }
   if (!WebAuthenticate()) { return WebServer->requestAuthentication(); }
@@ -958,7 +958,7 @@ void HandleLoggingConfiguration()
   ShowPage(page);
 }
 
-void HandleOtherConfiguration()
+void HandleOtherConfiguration(void)
 {
   if (HttpUser()) { return; }
   if (!WebAuthenticate()) { return WebServer->requestAuthentication(); }
@@ -996,7 +996,7 @@ void HandleOtherConfiguration()
   ShowPage(page);
 }
 
-void HandleBackupConfiguration()
+void HandleBackupConfiguration(void)
 {
   if (HttpUser()) { return; }
   if (!WebAuthenticate()) { return WebServer->requestAuthentication(); }
@@ -1032,7 +1032,7 @@ void HandleBackupConfiguration()
   SettingsBufferFree();
 }
 
-void HandleSaveSettings()
+void HandleSaveSettings(void)
 {
   if (HttpUser()) { return; }
   if (!WebAuthenticate()) { return WebServer->requestAuthentication(); }
@@ -1198,7 +1198,7 @@ void HandleSaveSettings()
   }
 }
 
-void HandleResetConfiguration()
+void HandleResetConfiguration(void)
 {
   if (HttpUser()) { return; }
   if (!WebAuthenticate()) { return WebServer->requestAuthentication(); }
@@ -1219,7 +1219,7 @@ void HandleResetConfiguration()
   ExecuteWebCommand(svalue, SRC_WEBGUI);
 }
 
-void HandleRestoreConfiguration()
+void HandleRestoreConfiguration(void)
 {
   if (HttpUser()) { return; }
   if (!WebAuthenticate()) { return WebServer->requestAuthentication(); }
@@ -1238,7 +1238,7 @@ void HandleRestoreConfiguration()
   upload_file_type = UPL_SETTINGS;
 }
 
-void HandleInformation()
+void HandleInformation(void)
 {
   if (HttpUser()) { return; }
   if (!WebAuthenticate()) { return WebServer->requestAuthentication(); }
@@ -1355,7 +1355,7 @@ void HandleInformation()
 }
 #endif  // Not BE_MINIMAL
 
-void HandleUpgradeFirmware()
+void HandleUpgradeFirmware(void)
 {
   if (HttpUser()) { return; }
   if (!WebAuthenticate()) { return WebServer->requestAuthentication(); }
@@ -1375,7 +1375,7 @@ void HandleUpgradeFirmware()
   upload_file_type = UPL_TASMOTA;
 }
 
-void HandleUpgradeFirmwareStart()
+void HandleUpgradeFirmwareStart(void)
 {
   if (HttpUser()) { return; }
   if (!WebAuthenticate()) { return WebServer->requestAuthentication(); }
@@ -1403,7 +1403,7 @@ void HandleUpgradeFirmwareStart()
   ExecuteWebCommand(svalue, SRC_WEBGUI);
 }
 
-void HandleUploadDone()
+void HandleUploadDone(void)
 {
   if (HttpUser()) { return; }
   if (!WebAuthenticate()) { return WebServer->requestAuthentication(); }
@@ -1456,7 +1456,7 @@ void HandleUploadDone()
   ShowPage(page);
 }
 
-void HandleUploadLoop()
+void HandleUploadLoop(void)
 {
   // Based on ESP8266HTTPUpdateServer.cpp uses ESP8266WebServer Parsing.cpp and Cores Updater.cpp (Update)
   boolean _serialoutput = (LOG_LEVEL_DEBUG <= seriallog_level);
@@ -1648,7 +1648,7 @@ void HandleUploadLoop()
   delay(0);
 }
 
-void HandlePreflightRequest()
+void HandlePreflightRequest(void)
 {
   WebServer->sendHeader(F("Access-Control-Allow-Origin"), F("*"));
   WebServer->sendHeader(F("Access-Control-Allow-Methods"), F("GET, POST"));
@@ -1656,7 +1656,7 @@ void HandlePreflightRequest()
   WebServer->send(200, FPSTR(HDR_CTYPE_HTML), "");
 }
 
-void HandleHttpCommand()
+void HandleHttpCommand(void)
 {
   if (HttpUser()) { return; }
 //  if (!WebAuthenticate()) { return WebServer->requestAuthentication(); }
@@ -1714,7 +1714,7 @@ void HandleHttpCommand()
   WebServer->send(200, FPSTR(HDR_CTYPE_JSON), message);
 }
 
-void HandleConsole()
+void HandleConsole(void)
 {
   if (HttpUser()) { return; }
   if (!WebAuthenticate()) { return WebServer->requestAuthentication(); }
@@ -1730,7 +1730,7 @@ void HandleConsole()
   ShowPage(page);
 }
 
-void HandleAjaxConsoleRefresh()
+void HandleAjaxConsoleRefresh(void)
 {
   if (HttpUser()) { return; }
   if (!WebAuthenticate()) { return WebServer->requestAuthentication(); }
@@ -1787,7 +1787,7 @@ void HandleAjaxConsoleRefresh()
   WebServer->send(200, FPSTR(HDR_CTYPE_XML), message);
 }
 
-void HandleRestart()
+void HandleRestart(void)
 {
   if (HttpUser()) { return; }
   if (!WebAuthenticate()) { return WebServer->requestAuthentication(); }
@@ -1810,7 +1810,7 @@ void HandleRestart()
 
 /********************************************************************************************/
 
-void HandleNotFound()
+void HandleNotFound(void)
 {
 //  snprintf_P(log_data, sizeof(log_data), PSTR(D_LOG_HTTP "Not fount (%s)"), WebServer->uri().c_str());
 //  AddLog(LOG_LEVEL_DEBUG);
@@ -1835,7 +1835,7 @@ void HandleNotFound()
 }
 
 /* Redirect to captive portal if we got a request for another domain. Return true in that case so the page handler do not try to handle the request again. */
-boolean CaptivePortal()
+boolean CaptivePortal(void)
 {
   if ((HTTP_MANAGER == webserver_state) && !ValidIpAddress(WebServer->hostHeader())) {
     AddLog_P(LOG_LEVEL_DEBUG, PSTR(D_LOG_HTTP D_REDIRECTED));
@@ -1981,7 +1981,7 @@ enum WebCommands { CMND_WEBSERVER, CMND_WEBPASSWORD, CMND_WEBLOG, CMND_WEBSEND, 
 const char kWebCommands[] PROGMEM = D_CMND_WEBSERVER "|" D_CMND_WEBPASSWORD "|" D_CMND_WEBLOG "|" D_CMND_WEBSEND "|" D_CMND_EMULATION ;
 const char kWebSendStatus[] PROGMEM = D_JSON_DONE "|" D_JSON_WRONG_PARAMETERS "|" D_JSON_CONNECT_FAILED "|" D_JSON_HOST_NOT_FOUND ;
 
-bool WebCommand()
+bool WebCommand(void)
 {
   char command[CMDSZ];
   bool serviced = true;

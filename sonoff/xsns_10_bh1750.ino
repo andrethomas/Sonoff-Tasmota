@@ -37,7 +37,7 @@ uint8_t bh1750_valid = 0;
 uint16_t bh1750_illuminance = 0;
 char bh1750_types[] = "BH1750";
 
-bool Bh1750Read()
+bool Bh1750Read(void)
 {
   if (bh1750_valid) { bh1750_valid--; }
 
@@ -51,7 +51,7 @@ bool Bh1750Read()
 
 /********************************************************************************************/
 
-void Bh1750Detect()
+void Bh1750Detect(void)
 {
   if (bh1750_type) {
     return;
@@ -70,7 +70,7 @@ void Bh1750Detect()
   }
 }
 
-void Bh1750EverySecond()
+void Bh1750EverySecond(void)
 {
   if (90 == (uptime %100)) {
     // 1mS

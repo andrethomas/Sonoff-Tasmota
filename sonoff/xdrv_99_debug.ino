@@ -126,7 +126,7 @@ Decoding 14 results
 
 /*******************************************************************************************/
 
-void CpuLoadLoop()
+void CpuLoadLoop(void)
 {
   CPU_last_loop_time = millis();
   if (CPU_load_check && CPU_last_millis) {
@@ -159,7 +159,7 @@ extern "C" {
   extern cont_t g_cont;
 }
 
-void DebugFreeMem()
+void DebugFreeMem(void)
 {
   register uint32_t *sp asm("a1");
 
@@ -181,7 +181,7 @@ extern "C" {
   extern cont_t* g_pcont;
 }
 
-void DebugFreeMem()
+void DebugFreeMem(void)
 {
   register uint32_t *sp asm("a1");
 
@@ -403,7 +403,7 @@ void DebugCfgShow(uint8_t more)
 
 /*******************************************************************************************/
 
-boolean DebugCommand()
+boolean DebugCommand(void)
 {
   char command[CMDSZ];
   boolean serviced = true;

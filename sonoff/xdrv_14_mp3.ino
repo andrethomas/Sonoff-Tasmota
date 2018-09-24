@@ -102,7 +102,7 @@ uint16_t MP3_Checksum(uint8_t *array)
 // init player, define serial tx port
 // fixed with 9600 baud
 //
-void MP3PlayerInit() {
+void MP3PlayerInit(void) {
   MP3Player = new TasmotaSerial(-1, pin[GPIO_MP3_DFR562]);
   // start serial communication fixed to 9600 baud
   if (MP3Player->begin(9600)) { 
@@ -132,7 +132,7 @@ void MP3_CMD(uint8_t mp3cmd,uint16_t val) {
 
 // check the MP3 commands
 //
-boolean MP3PlayerCmd() {
+boolean MP3PlayerCmd(void) {
   char command[CMDSZ];
   boolean serviced = true;
   uint8_t disp_len = strlen(D_CMND_MP3);

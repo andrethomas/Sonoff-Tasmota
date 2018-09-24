@@ -104,7 +104,7 @@ void DisplayInit(uint8_t mode)
   XdspCall(FUNC_DISPLAY_INIT);
 }
 
-void DisplayClear()
+void DisplayClear(void)
 {
   XdspCall(FUNC_DISPLAY_CLEAR);
 }
@@ -175,7 +175,7 @@ void DisplayDrawFilledRectangle(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2
   XdspCall(FUNC_DISPLAY_FILL_RECTANGLE);
 }
 
-void DisplayDrawFrame()
+void DisplayDrawFrame(void)
 {
   XdspCall(FUNC_DISPLAY_DRAW_FRAME);
 }
@@ -252,7 +252,7 @@ uint8_t atoiV(char *cp, uint16_t *res)
 
 #define DISPLAY_BUFFER_COLS    128          // Max number of characters in linebuf
 
-void DisplayText()
+void DisplayText(void)
 {
   uint8_t lpos;
   uint8_t escape = 0;
@@ -485,7 +485,7 @@ void DisplayText()
 
 #ifdef USE_DISPLAY_MODES1TO5
 
-void DisplayClearScreenBuffer()
+void DisplayClearScreenBuffer(void)
 {
   if (disp_screen_buffer_cols) {
     for (byte i = 0; i < disp_screen_buffer_rows; i++) {
@@ -494,7 +494,7 @@ void DisplayClearScreenBuffer()
   }
 }
 
-void DisplayFreeScreenBuffer()
+void DisplayFreeScreenBuffer(void)
 {
   if (disp_screen_buffer != NULL) {
     for (byte i = 0; i < disp_screen_buffer_rows; i++) {
@@ -506,7 +506,7 @@ void DisplayFreeScreenBuffer()
   }
 }
 
-void DisplayAllocScreenBuffer()
+void DisplayAllocScreenBuffer(void)
 {
   if (!disp_screen_buffer_cols) {
     disp_screen_buffer_rows = Settings.display_rows;
@@ -527,7 +527,7 @@ void DisplayAllocScreenBuffer()
   }
 }
 
-void DisplayReAllocScreenBuffer()
+void DisplayReAllocScreenBuffer(void)
 {
   DisplayFreeScreenBuffer();
   DisplayAllocScreenBuffer();
@@ -544,7 +544,7 @@ void DisplayFillScreen(uint8_t line)
 
 /*-------------------------------------------------------------------------------------------*/
 
-void DisplayClearLogBuffer()
+void DisplayClearLogBuffer(void)
 {
   if (disp_log_buffer_cols) {
     for (byte i = 0; i < DISPLAY_LOG_ROWS; i++) {
@@ -553,7 +553,7 @@ void DisplayClearLogBuffer()
   }
 }
 
-void DisplayFreeLogBuffer()
+void DisplayFreeLogBuffer(void)
 {
   if (disp_log_buffer != NULL) {
     for (byte i = 0; i < DISPLAY_LOG_ROWS; i++) {
@@ -564,7 +564,7 @@ void DisplayFreeLogBuffer()
   }
 }
 
-void DisplayAllocLogBuffer()
+void DisplayAllocLogBuffer(void)
 {
   if (!disp_log_buffer_cols) {
     disp_log_buffer = (char**)malloc(sizeof(*disp_log_buffer) * DISPLAY_LOG_ROWS);
@@ -584,7 +584,7 @@ void DisplayAllocLogBuffer()
   }
 }
 
-void DisplayReAllocLogBuffer()
+void DisplayReAllocLogBuffer(void)
 {
   DisplayFreeLogBuffer();
   DisplayAllocLogBuffer();
@@ -615,7 +615,7 @@ char* DisplayLogBuffer(char temp_code)
   return result;
 }
 
-void DisplayLogBufferInit()
+void DisplayLogBufferInit(void)
 {
   if (Settings.display_mode) {
     disp_log_buffer_idx = 0;
@@ -791,7 +791,7 @@ void DisplayAnalyzeJson(char *topic, char *json)
   }
 }
 
-void DisplayMqttSubscribe()
+void DisplayMqttSubscribe(void)
 {
 /* Subscribe to tele messages only
  * Supports the following FullTopic formats
@@ -824,7 +824,7 @@ void DisplayMqttSubscribe()
   }
 }
 
-boolean DisplayMqttData()
+boolean DisplayMqttData(void)
 {
   if (disp_subscribed) {
     char stopic[TOPSZ];
@@ -843,7 +843,7 @@ boolean DisplayMqttData()
   return false;
 }
 
-void DisplayLocalSensor()
+void DisplayLocalSensor(void)
 {
   if ((Settings.display_mode &0x02) && (0 == tele_period)) {
     DisplayAnalyzeJson(mqtt_topic, mqtt_data);
@@ -856,7 +856,7 @@ void DisplayLocalSensor()
  * Public
 \*********************************************************************************************/
 
-void DisplayInitDriver()
+void DisplayInitDriver(void)
 {
   XdspCall(FUNC_DISPLAY_INIT_DRIVER);
 
@@ -875,7 +875,7 @@ void DisplayInitDriver()
   }
 }
 
-void DisplaySetPower()
+void DisplaySetPower(void)
 {
   disp_power = bitRead(XdrvMailbox.index, disp_device -1);
   if (Settings.display_model) {
@@ -887,7 +887,7 @@ void DisplaySetPower()
  * Commands
 \*********************************************************************************************/
 
-boolean DisplayCommand()
+boolean DisplayCommand(void)
 {
   char command [CMDSZ];
   boolean serviced = true;

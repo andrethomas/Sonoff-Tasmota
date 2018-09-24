@@ -62,7 +62,7 @@ const double pi2 = TWO_PI;
 const double pi = PI;
 const double RAD = DEG_TO_RAD;
 
-double JulianischesDatum()
+double JulianischesDatum(void)
 {
   // Gregorianischer Kalender
   int Gregor;
@@ -253,12 +253,12 @@ void TimerSetRandomWindow(byte index)
   }
 }
 
-void TimerSetRandomWindows()
+void TimerSetRandomWindows(void)
 {
   for (byte i = 0; i < MAX_TIMERS; i++) { TimerSetRandomWindow(i); }
 }
 
-void TimerEverySecond()
+void TimerEverySecond(void)
 {
   if (RtcTime.valid) {
     if (!RtcTime.hour && !RtcTime.minute && !RtcTime.second) { TimerSetRandomWindows(); }  // Midnight
@@ -336,7 +336,7 @@ void PrepShowTimer(uint8_t index)
  * Commands
 \*********************************************************************************************/
 
-boolean TimerCommand()
+boolean TimerCommand(void)
 {
   char command[CMDSZ];
   char dataBufUc[XdrvMailbox.data_len];
@@ -674,7 +674,7 @@ const char HTTP_FORM_TIMER2[] PROGMEM =
 
 const char S_CONFIGURE_TIMER[] PROGMEM = D_CONFIGURE_TIMER;
 
-void HandleTimerConfiguration()
+void HandleTimerConfiguration(void)
 {
   if (HttpUser()) { return; }
   if (!WebAuthenticate()) { return WebServer->requestAuthentication(); }
@@ -705,7 +705,7 @@ void HandleTimerConfiguration()
   ShowPage(page);
 }
 
-void TimerSaveSettings()
+void TimerSaveSettings(void)
 {
   char tmp[MAX_TIMERS *12];  // Need space for MAX_TIMERS x 10 digit numbers separated by a comma
   Timer timer;

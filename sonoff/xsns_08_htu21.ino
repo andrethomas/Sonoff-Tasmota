@@ -131,14 +131,14 @@ void HtuHeater(uint8_t heater)
   I2cWrite8(HTU21_ADDR, HTU21_WRITEREG, current);
 }
 
-void HtuInit()
+void HtuInit(void)
 {
   HtuReset();
   HtuHeater(HTU21_HEATER_OFF);
   HtuSetResolution(HTU21_RES_RH12_T14);
 }
 
-boolean HtuRead()
+boolean HtuRead(void)
 {
   uint8_t  checksum = 0;
   uint16_t sensorval = 0;
@@ -193,7 +193,7 @@ boolean HtuRead()
 
 /********************************************************************************************/
 
-void HtuDetect()
+void HtuDetect(void)
 {
   if (htu_type) { return; }
 
@@ -227,7 +227,7 @@ void HtuDetect()
   }
 }
 
-void HtuEverySecond()
+void HtuEverySecond(void)
 {
   if (92 == (uptime %100)) {
     // 1mS

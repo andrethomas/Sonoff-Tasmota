@@ -84,7 +84,7 @@ void Pzem2ModbusSend(uint8_t function_code, uint16_t start_address, uint16_t reg
   Pzem2Serial->write(frame, sizeof(frame));
 }
 
-bool Pzem2ModbusReceiveReady()
+bool Pzem2ModbusReceiveReady(void)
 {
   return (Pzem2Serial->available() >= 5);  // 5 - Error frame, 21 or 25 - Ok frame
 }
@@ -120,7 +120,7 @@ uint8_t Pzem2ModbusReceive(uint8_t *buffer, uint8_t register_count)
 
 uint8_t pzem2_sendRetry = 0;
 
-void Pzem2Every200ms()
+void Pzem2Every200ms(void)
 {
   bool data_ready = Pzem2ModbusReceiveReady();
 
@@ -180,7 +180,7 @@ void Pzem2Every200ms()
   }
 }
 
-void Pzem2SnsInit()
+void Pzem2SnsInit(void)
 {
   // Software serial init needs to be done here as earlier (serial) interrupts may lead to Exceptions
   Pzem2Serial = new TasmotaSerial(pin[GPIO_PZEM2_RX], pin[GPIO_PZEM2_TX], 1);
@@ -191,7 +191,7 @@ void Pzem2SnsInit()
   }
 }
 
-void Pzem2DrvInit()
+void Pzem2DrvInit(void)
 {
   if (!energy_flg) {
     if ((pin[GPIO_PZEM2_RX] < 99) && (pin[GPIO_PZEM2_TX] < 99)) {  // Any device with a Pzem-003,014,016,017

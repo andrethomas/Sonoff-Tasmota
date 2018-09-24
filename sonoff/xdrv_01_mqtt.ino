@@ -74,12 +74,12 @@ bool mqtt_connected = false;                // MQTT virtual connection status
 
 PubSubClient MqttClient(EspClient);
 
-bool MqttIsConnected()
+bool MqttIsConnected(void)
 {
   return MqttClient.connected();
 }
 
-void MqttDisconnect()
+void MqttDisconnect(void)
 {
   MqttClient.disconnect();
 }
@@ -97,7 +97,7 @@ bool MqttPublishLib(const char* topic, boolean retained)
   return result;
 }
 
-void MqttLoop()
+void MqttLoop(void)
 {
   MqttClient.loop();
 }
@@ -107,17 +107,17 @@ void MqttLoop()
 #include <TasmotaMqtt.h>
 TasmotaMqtt MqttClient;
 
-bool MqttIsConnected()
+bool MqttIsConnected(void)
 {
   return MqttClient.Connected();
 }
 
-void MqttDisconnect()
+void MqttDisconnect(void)
 {
   MqttClient.Disconnect();
 }
 
-void MqttDisconnectedCb()
+void MqttDisconnectedCb(void)
 {
   MqttDisconnected(MqttClient.State());  // status codes are documented in file mqtt.h as tConnState
 }
@@ -132,7 +132,7 @@ bool MqttPublishLib(const char* topic, boolean retained)
   return MqttClient.Publish(topic, mqtt_data, strlen(mqtt_data), 0, retained);
 }
 
-void MqttLoop()
+void MqttLoop(void)
 {
 }
 
@@ -141,17 +141,17 @@ void MqttLoop()
 #include <MQTT.h>
 MQTT *MqttClient = NULL;
 
-bool MqttIsConnected()
+bool MqttIsConnected(void)
 {
   return mqtt_connected;
 }
 
-void MqttDisconnect()
+void MqttDisconnect(void)
 {
   if (MqttClient) MqttClient->disconnect();
 }
 
-void MqttDisconnectedCb()
+void MqttDisconnectedCb(void)
 {
   MqttDisconnected(MqttClient->getState());  // status codes are documented in file mqtt.h as tConnState
 }
@@ -176,7 +176,7 @@ bool MqttPublishLib(const char* topic, boolean retained)
   return MqttClient->publish(topic, mqtt_data, strlen(mqtt_data), 0, retained);
 }
 
-void MqttLoop()
+void MqttLoop(void)
 {
 }
 
@@ -184,7 +184,7 @@ void MqttLoop()
 
 /*********************************************************************************************/
 
-int MqttLibraryType()
+int MqttLibraryType(void)
 {
   return (int)MQTT_LIBRARY_TYPE;
 }
@@ -331,7 +331,7 @@ void MqttDisconnected(int state)
   rules_flag.mqtt_disconnected = 1;
 }
 
-void MqttConnected()
+void MqttConnected(void)
 {
   char stopic[TOPSZ];
 
@@ -390,7 +390,7 @@ void MqttConnected()
 }
 
 #ifdef USE_MQTT_TLS
-boolean MqttCheckTls()
+boolean MqttCheckTls(void)
 {
   char fingerprint1[60];
   char fingerprint2[60];
@@ -430,7 +430,7 @@ boolean MqttCheckTls()
 }
 #endif  // USE_MQTT_TLS
 
-void MqttReconnect()
+void MqttReconnect(void)
 {
   char stopic[TOPSZ];
 
@@ -513,7 +513,7 @@ void MqttReconnect()
 #endif  // MQTT_LIBRARY_TYPE
 }
 
-void MqttCheck()
+void MqttCheck(void)
 {
   if (Settings.flag.mqtt_enabled) {
     if (!MqttIsConnected()) {
@@ -534,7 +534,7 @@ void MqttCheck()
 
 /*********************************************************************************************/
 
-bool MqttCommand()
+bool MqttCommand(void)
 {
   char command [CMDSZ];
   bool serviced = true;

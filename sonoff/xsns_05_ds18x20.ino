@@ -62,7 +62,7 @@ uint8_t onewire_last_family_discrepancy = 0;
 bool onewire_last_device_flag = false;
 unsigned char onewire_rom_id[8] = { 0 };
 
-uint8_t OneWireReset()
+uint8_t OneWireReset(void)
 {
   uint8_t retries = 125;
 
@@ -100,7 +100,7 @@ void OneWireWriteBit(uint8_t v)
   delayMicroseconds(delay_high[v]);
 }
 
-uint8_t OneWireReadBit()
+uint8_t OneWireReadBit(void)
 {
   //noInterrupts();
   pinMode(ds18x20_pin, OUTPUT);
@@ -121,7 +121,7 @@ void OneWireWrite(uint8_t v)
   }
 }
 
-uint8_t OneWireRead()
+uint8_t OneWireRead(void)
 {
   uint8_t r = 0;
 
@@ -141,7 +141,7 @@ void OneWireSelect(const uint8_t rom[8])
   }
 }
 
-void OneWireResetSearch()
+void OneWireResetSearch(void)
 {
   onewire_last_discrepancy = 0;
   onewire_last_device_flag = false;
@@ -247,7 +247,7 @@ boolean OneWireCrc8(uint8_t *addr)
 
 /********************************************************************************************/
 
-void Ds18x20Init()
+void Ds18x20Init(void)
 {
   uint64_t ids[DS18X20_MAX_SENSORS];
 
@@ -282,7 +282,7 @@ void Ds18x20Init()
   AddLog(LOG_LEVEL_DEBUG);
 }
 
-void Ds18x20Convert()
+void Ds18x20Convert(void)
 {
   OneWireReset();
   OneWireWrite(W1_SKIP_ROM);           // Address all Sensors on Bus
@@ -372,7 +372,7 @@ void Ds18x20Name(uint8_t sensor)
 
 /********************************************************************************************/
 
-void Ds18x20EverySecond()
+void Ds18x20EverySecond(void)
 {
   if (uptime &1) {
     // 2mS

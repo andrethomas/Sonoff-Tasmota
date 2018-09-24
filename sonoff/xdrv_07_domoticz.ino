@@ -59,7 +59,7 @@ boolean domoticz_subscribe = false;
 int domoticz_update_timer = 0;
 byte domoticz_update_flag = 1;
 
-int DomoticzBatteryQuality()
+int DomoticzBatteryQuality(void)
 {
   // Battery 0%: ESP 2.6V (minimum operating voltage is 2.5)
   // Battery 100%: ESP 3.6V (maximum operating voltage is 3.6)
@@ -78,7 +78,7 @@ int DomoticzBatteryQuality()
   return quality;
 }
 
-int DomoticzRssiQuality()
+int DomoticzRssiQuality(void)
 {
   // RSSI range: 0% to 10% (12 means disable RSSI in Domoticz)
 
@@ -108,7 +108,7 @@ void DomoticzUpdatePowerState(byte device)
   domoticz_update_flag = 1;
 }
 
-void DomoticzMqttUpdate()
+void DomoticzMqttUpdate(void)
 {
   if (domoticz_subscribe && (Settings.domoticz_update_timer || domoticz_update_timer)) {
     domoticz_update_timer--;
@@ -121,7 +121,7 @@ void DomoticzMqttUpdate()
   }
 }
 
-void DomoticzMqttSubscribe()
+void DomoticzMqttSubscribe(void)
 {
   uint8_t maxdev = (devices_present > MAX_DOMOTICZ_IDX) ? MAX_DOMOTICZ_IDX : devices_present;
   for (byte i = 0; i < maxdev; i++) {
@@ -153,7 +153,7 @@ void DomoticzMqttSubscribe()
 }
 */
 
-boolean DomoticzMqttData()
+boolean DomoticzMqttData(void)
 {
   char stemp1[10];
   unsigned long idx = 0;
@@ -233,7 +233,7 @@ boolean DomoticzMqttData()
  * Commands
 \*********************************************************************************************/
 
-boolean DomoticzCommand()
+boolean DomoticzCommand(void)
 {
   char command [CMDSZ];
   boolean serviced = true;
@@ -373,7 +373,7 @@ void DomoticzSensorPowerEnergy(int power, char *energy)
 #ifdef USE_WEBSERVER
 const char S_CONFIGURE_DOMOTICZ[] PROGMEM = D_CONFIGURE_DOMOTICZ;
 
-void HandleDomoticzConfiguration()
+void HandleDomoticzConfiguration(void)
 {
   if (HttpUser()) { return; }
   if (!WebAuthenticate()) { return WebServer->requestAuthentication(); }
@@ -411,7 +411,7 @@ void HandleDomoticzConfiguration()
   ShowPage(page);
 }
 
-void DomoticzSaveSettings()
+void DomoticzSaveSettings(void)
 {
   char stemp[20];
   char ssensor_indices[6 * MAX_DOMOTICZ_SNS_IDX];

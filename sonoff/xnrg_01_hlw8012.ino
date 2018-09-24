@@ -63,11 +63,11 @@ unsigned long hlw_cf1_voltage_max_pulse_counter;
 unsigned long hlw_cf1_current_max_pulse_counter;
 
 #ifndef USE_WS2812_DMA  // Collides with Neopixelbus but solves exception
-void HlwCfInterrupt() ICACHE_RAM_ATTR;
-void HlwCf1Interrupt() ICACHE_RAM_ATTR;
+void HlwCfInterrupt(void) ICACHE_RAM_ATTR;
+void HlwCf1Interrupt(void) ICACHE_RAM_ATTR;
 #endif  // USE_WS2812_DMA
 
-void HlwCfInterrupt()  // Service Power
+void HlwCfInterrupt(void)  // Service Power
 {
   unsigned long us = micros();
 
@@ -81,7 +81,7 @@ void HlwCfInterrupt()  // Service Power
   }
 }
 
-void HlwCf1Interrupt()  // Service Voltage and Current
+void HlwCf1Interrupt(void)  // Service Voltage and Current
 {
   unsigned long us = micros();
 
@@ -98,7 +98,7 @@ void HlwCf1Interrupt()  // Service Voltage and Current
 
 /********************************************************************************************/
 
-void HlwEvery200ms()
+void HlwEvery200ms(void)
 {
   unsigned long hlw_w = 0;
   unsigned long hlw_u = 0;
@@ -155,7 +155,7 @@ void HlwEvery200ms()
   }
 }
 
-void HlwEverySecond()
+void HlwEverySecond(void)
 {
   unsigned long hlw_len;
 
@@ -169,7 +169,7 @@ void HlwEverySecond()
   }
 }
 
-void HlwSnsInit()
+void HlwSnsInit(void)
 {
   if (!Settings.energy_power_calibration || (4975 == Settings.energy_power_calibration)) {
     Settings.energy_power_calibration = HLW_PREF_PULSE;
@@ -213,7 +213,7 @@ void HlwSnsInit()
   hlw_cf1_timer = 0;
 }
 
-void HlwDrvInit()
+void HlwDrvInit(void)
 {
   if (!energy_flg) {
     if ((pin[GPIO_HLW_SEL] < 99) && (pin[GPIO_HLW_CF1] < 99) && (pin[GPIO_HLW_CF] < 99)) {  // Sonoff Pow or any HLW8012 based device
@@ -223,7 +223,7 @@ void HlwDrvInit()
   }
 }
 
-boolean HlwCommand()
+boolean HlwCommand(void)
 {
   boolean serviced = true;
 

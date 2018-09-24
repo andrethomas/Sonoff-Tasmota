@@ -84,7 +84,7 @@ uint16_t cal_ac4;
 uint16_t cal_ac5;
 uint16_t cal_ac6;
 
-boolean Bmp180Calibration()
+boolean Bmp180Calibration(void)
 {
   cal_ac1 = I2cRead16(bmp_address, BMP180_AC1);
   cal_ac2 = I2cRead16(bmp_address, BMP180_AC2);
@@ -117,7 +117,7 @@ boolean Bmp180Calibration()
   return true;
 }
 
-void Bmp180Read()
+void Bmp180Read(void)
 {
   I2cWrite8(bmp_address, BMP180_REG_CONTROL, BMP180_TEMPERATURE);
   delay(5); // 5ms conversion time
@@ -212,7 +212,7 @@ struct BME280CALIBDATA
   int8_t   dig_H6;
 } Bme280CalibrationData;
 
-boolean Bmx280Calibrate()
+boolean Bmx280Calibrate(void)
 {
   //  if (I2cRead8(bmp_address, BMP_REGISTER_CHIPID) != BME280_CHIPID) return false;
 
@@ -314,7 +314,7 @@ static void BmeDelayMs(uint32_t ms)
   delay(ms);
 }
 
-boolean Bme680Init()
+boolean Bme680Init(void)
 {
   gas_sensor.dev_id = bmp_address;
   gas_sensor.intf = BME680_I2C_INTF;
@@ -358,7 +358,7 @@ boolean Bme680Init()
   return true;
 }
 
-void Bme680Read()
+void Bme680Read(void)
 {
   int8_t rslt = BME680_OK;
 
@@ -400,7 +400,7 @@ void Bme680Read()
 
 /********************************************************************************************/
 
-void BmpDetect()
+void BmpDetect(void)
 {
   if (bmp_type) { return; }
 
@@ -442,7 +442,7 @@ void BmpDetect()
   }
 }
 
-void BmpRead()
+void BmpRead(void)
 {
   switch (bmp_type) {
     case BMP180_CHIPID:
@@ -463,7 +463,7 @@ void BmpRead()
   SetGlobalValues(bmp_temperature, bmp_humidity);
 }
 
-void BmpEverySecond()
+void BmpEverySecond(void)
 {
   if (91 == (uptime %100)) {
     // 1mS
